@@ -54,6 +54,8 @@ public class InterfazBasica extends JFrame implements DocumentListener{
 	private JScrollPane scrollthepanelbch;
 	private JLabel lblNewLabel;
 	private JTextField textField_eficacia;
+	private JLabel lbl_canInfo;
+	private JTextField textField_CantInfo;
 
 	/**
 	 * Launch the application.
@@ -121,7 +123,7 @@ public class InterfazBasica extends JFrame implements DocumentListener{
 		JLabel lbl_entropia = new JLabel("Entropía:");
 		lbl_entropia.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_entropia.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_entropia.setBounds(10, 376, 71, 23);
+		lbl_entropia.setBounds(89, 377, 71, 23);
 		contentPane.add(lbl_entropia);
 
 		textField_setncarac = new JTextField();
@@ -133,7 +135,7 @@ public class InterfazBasica extends JFrame implements DocumentListener{
 		textField_setentropia = new JTextField();
 		textField_setentropia.setEditable(false);
 		textField_setentropia.setColumns(10);
-		textField_setentropia.setBounds(89, 376, 57, 24);
+		textField_setentropia.setBounds(168, 377, 57, 24);
 		contentPane.add(textField_setentropia);
 
 		JLabel lblIntroduzcaCaractersPara = new JLabel("Introduzca caracter/s para calcular f+p:");
@@ -150,25 +152,25 @@ public class InterfazBasica extends JFrame implements DocumentListener{
 		textField_setfrec = new JTextField();
 		textField_setfrec.setEditable(false);
 		textField_setfrec.setColumns(10);
-		textField_setfrec.setBounds(543, 343, 57, 24);
+		textField_setfrec.setBounds(435, 343, 57, 24);
 		contentPane.add(textField_setfrec);
 
 		JLabel lbl_frec_1 = new JLabel("Frecuencia (f):");
 		lbl_frec_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_frec_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_frec_1.setBounds(403, 342, 130, 23);
+		lbl_frec_1.setBounds(295, 342, 130, 23);
 		contentPane.add(lbl_frec_1);
 
 		JLabel lbl_prob_1 = new JLabel("Probabilidad(p):");
 		lbl_prob_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_prob_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_prob_1.setBounds(403, 376, 130, 23);
+		lbl_prob_1.setBounds(473, 342, 130, 23);
 		contentPane.add(lbl_prob_1);
 
 		textField_setprob = new JTextField();
 		textField_setprob.setEditable(false);
 		textField_setprob.setColumns(10);
-		textField_setprob.setBounds(543, 377, 57, 24);
+		textField_setprob.setBounds(613, 343, 57, 24);
 		contentPane.add(textField_setprob);
 
 		wasBtnEntropiaPressed=false;
@@ -212,14 +214,26 @@ public class InterfazBasica extends JFrame implements DocumentListener{
 		JLabel lbl_eficacia_a = new JLabel("Eficacia:");
 		lbl_eficacia_a.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl_eficacia_a.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lbl_eficacia_a.setBounds(173, 376, 71, 23);
+		lbl_eficacia_a.setBounds(254, 376, 71, 23);
 		contentPane.add(lbl_eficacia_a);
 		
 		textField_eficacia = new JTextField();
 		textField_eficacia.setEditable(false);
 		textField_eficacia.setColumns(10);
-		textField_eficacia.setBounds(254, 376, 57, 24);
+		textField_eficacia.setBounds(335, 376, 57, 24);
 		contentPane.add(textField_eficacia);
+		
+		lbl_canInfo = new JLabel("Cant. info:");
+		lbl_canInfo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbl_canInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl_canInfo.setBounds(445, 377, 71, 23);
+		contentPane.add(lbl_canInfo);
+		
+		textField_CantInfo = new JTextField();
+		textField_CantInfo.setEditable(false);
+		textField_CantInfo.setColumns(10);
+		textField_CantInfo.setBounds(526, 377, 77, 24);
+		contentPane.add(textField_CantInfo);
 		//contentPane.add(panel);
 
 		textField_estudiacaracter.getDocument().addDocumentListener(this);
@@ -320,10 +334,11 @@ public class InterfazBasica extends JFrame implements DocumentListener{
 	public void accionBtnCalcularEntropia() {
 		DecimalFormat df = new DecimalFormat("##.#####");
 		txt.setMap((int)spinner.getValue());
-		System.out.println(txt.mapToString(txt.getMapaDatos()));
+		//System.out.println(txt.mapToString(txt.getMapaDatos()));
 		textField_setentropia.setText( String.valueOf(df.format(txt.getEntropia())) );
 		textField_setncarac.setText( String.valueOf(txt.getNumCaracteres()) );
 		textField_eficacia.setText(String.valueOf(df.format(txt.getEficacia((int)spinner.getValue()))));
+		textField_CantInfo.setText(String.valueOf(df.format(txt.printCantidadInfo())));
 		Map<String, Integer> mapaDatos= txt.sortedMap();
 
 		//.setBounds(370, 60, 300, 235);

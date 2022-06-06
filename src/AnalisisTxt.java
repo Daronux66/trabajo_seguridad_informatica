@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class AnalisisTxt {
-	
+
 	//private StringBuffer datosAux;
 	private String datosBase;
 	private Map<String, Integer> mapaDatos;
@@ -22,7 +22,7 @@ public class AnalisisTxt {
 	private String alfabeto;
 	//private int lenghtPalabara;
 
-	
+
 	public AnalisisTxt(boolean conPath, String path) {
 		StringBuffer strbuff= new StringBuffer();
 		try {
@@ -54,8 +54,8 @@ public class AnalisisTxt {
 		this.alfabeto=setMap(lenghtPalabara);
 		//this.lenghtPalabara=lenghtPalabara;
 	}
-	
-	
+
+
 	/**
 	 * @return the alfabeto
 	 */
@@ -113,7 +113,7 @@ public class AnalisisTxt {
 	public String setMap(int lenghtPalabara) {
 		mapaDatos=new HashMap<String, Integer>();
 		StringBuffer datosAux=new StringBuffer(datosBase);
-		
+
 		String caracteres_aux;
 		int contAux;
 		numCaracteres=0;
@@ -131,13 +131,14 @@ public class AnalisisTxt {
 				sb.append(caracteres_aux);
 				mapaDatos.put(caracteres_aux, 1);
 			}
-			
+
 			numCaracteres++;
 			datosAux.delete(0, lenghtPalabara);
 			//System.out.println(datosAux.toString());
 			//if(datosAux.length()<lenghtPalabara);
 		}
-		System.out.println();
+		System.out.println("mapa size = "+mapaDatos.size());
+		printCantidadInfo();
 		return sb.toString();
 		//System.out.println(mapaDatos);
 	}
@@ -160,6 +161,17 @@ public class AnalisisTxt {
 		return prob;
 	}
 
+	public float printCantidadInfo() {
+		float cantInf=0;
+		for (Map.Entry<String, Integer> entry : mapaDatos.entrySet()) {
+			// System.out.println(entry.getKey() + "/" + entry.getValue());
+			float prob=getProbChar(entry.getKey());
+			cantInf+=log((1f/prob), 2);
+		}
+		System.out.println("Cantidad información = "+cantInf);
+		return cantInf;
+	}
+
 	public Float getEntropia() {
 		// H(f)=log2(tot) - [ (1/tot) * sum<m,i=1>( f(i)*log2(f(i)) ) ]
 		// H(f)=a-(bc)
@@ -170,39 +182,39 @@ public class AnalisisTxt {
 		float c=0;
 		float frecAux;
 		for (Map.Entry<String, Integer> entry : mapaDatos.entrySet()) {
-		   // System.out.println(entry.getKey() + "/" + entry.getValue());
-		    frecAux=entry.getValue();
-		    c+=(frecAux*log(frecAux, 2));
+			// System.out.println(entry.getKey() + "/" + entry.getValue());
+			frecAux=entry.getValue();
+			c+=(frecAux*log(frecAux, 2));
 		}
-		
+
 		tot=a-(b*c);
-		
+
 		return tot;
 	}
-	
+
 	public float getEficacia(int lenghtPalabara) {
 		float h=this.getEntropia();
 		float log2q=this.log(this.mapaDatos.size(), 2);
 		float res=h/(log2q*(float)lenghtPalabara);
 		return res;		
 	}
-	
+
 	public Map<String, Integer> sortedMap() {
 		Map<String, Integer> sortedMap = mapaDatos.entrySet()
-		.stream()
-		  .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-		  .collect(Collectors.toMap(
-		    Map.Entry::getKey, 
-		    Map.Entry::getValue, 
-		    (viejo, nuevo) -> viejo, LinkedHashMap::new));
+				.stream()
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+				.collect(Collectors.toMap(
+						Map.Entry::getKey, 
+						Map.Entry::getValue, 
+						(viejo, nuevo) -> viejo, LinkedHashMap::new));
 		return sortedMap;
 	}
-	
+
 	private Float log(float num, int base) {
 		return ( ((float) Math.log10(num)) / ((float) (Math.log10(base)) ) );
 	}
-	
-	
+
+
 	public String mapToString(Map<String, Integer> sortedMap) {
 		StringBuffer buff=new StringBuffer("      Símbolo\t|   Frecuencia\t|\tProbabilidad\n"
 				+ "-----------------------------------------------------\n");
@@ -213,7 +225,7 @@ public class AnalisisTxt {
 		buff.delete(buff.length()-1, buff.length());
 		return buff.toString();
 	}
-	
+
 	public String mapUnOrderedToString() {
 		StringBuffer buff=new StringBuffer("      Símbolo\t|   Frecuencia\t|\tProbabilidad\n"
 				+ "-----------------------------------------------------\n");
@@ -224,7 +236,7 @@ public class AnalisisTxt {
 		buff.delete(buff.length()-1, buff.length());
 		return buff.toString();
 	}
-	
+
 	public String mapOrderedToString() {
 		StringBuffer buff=new StringBuffer("      Símbolo\t|   Frecuencia\t|\tProbabilidad\n"
 				+ "-----------------------------------------------------\n");
@@ -253,20 +265,20 @@ public class AnalisisTxt {
 		}
 		//System.out.println("Input: " + strbuff.toString());
 		if(strbuff.isEmpty())return;
-		
+
 		AnalisisTxt txt=new AnalisisTxt(strbuff.toString(),1);
-		
+
 		StringBuffer buff= new StringBuffer();
 		for (Map.Entry<String, Integer> entry : txt.getMapaDatos().entrySet()) {
 			buff.append(entry.getKey());
 		}
 		System.out.println(buff.toString());
 		//System.out.println("-1 = error\nFrec ', ': "+txt.getFrecChar(", ")+" / Prob ', ': "+txt.getProbChar(", ") + " /Entropia de F: "+txt.getEntropia());
-		
-		
+
+
 		/*AnalisisTxt txt=new AnalisisTxt(strbuff.toString());
 		System.out.println("-1 = error\nFrec d: "+txt.getFrecChar("d")+" / Prob d: "+txt.getProbChar("d") + " /Entropia de F: "+txt.getEntropia());
-		*/
+		 */
 		//System.out.println(txt.mapToString(txt.sortedMap()));
 	}
 }
